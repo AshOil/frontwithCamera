@@ -1,44 +1,72 @@
 import React, { useState } from 'react';
+import { Link, withRouter } from "react-router-dom";
+import "../../App.css"
+import "./CSS/Camera.css"
 import PhotoCameraRoundedIcon from "@material-ui/icons/PhotoCameraRounded";
+import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+import ReplayRoundedIcon from '@material-ui/icons/ReplayRounded';
 
 function Camera() {
   const [source, setSource] = useState("");
-
+  const [selectedFile, setSelectedFile] = useState()
+  
   const handleCapture = (target) => {
     if (target.files) {
       if (target.files.length !== 0) {
         const file = target.files[0];
+        setSelectedFile(target.files)
         const newUrl = URL.createObjectURL(file);
         setSource(newUrl);
       }
     }
   };
 
+  const sourceClear = () => {
+    setSource("")
+    console.log(source)
+  }
+
   return (
     <div >
-      <h5>사진 올리기</h5>
-      { source && 
-        <video 
-          controls width="250"
-          src={source}
-          type="video/webm"
-          alt={"snap"}
-          autoPlay="true"
-        > 
-          Sorry, your browser doesn't support embedded videos.
-        </video> }
-      <input
-        accept="video/*"
-        id="icon-button-file"
-        type="file"
-        capture="environment"
-        onChange={(e) => handleCapture(e.target)}
-      />
-      <label htmlFor="icon-button-file" component="span">
-          <PhotoCameraRoundedIcon fontSize="large" color="primary" />
-      </label>
+      { source ? (
+        <div>
+          <video 
+            id="background-video" 
+            className='videoTag' 
+            src={source} 
+            type='video/mp4'
+            width= "100%"
+            height= "100%"
+            autoPlay 
+            loop 
+            muted 
+          />
+          <div id="button-wapper">
+            <a id="retry" onClick={sourceClear}>
+              <ReplayRoundedIcon id="retryIcon" color="disabled" fontSize="large"/>
+            </a>
+            <a id="next">
+              <Link to="/feed/createarticle"> <NavigateNextIcon fontSize="large" color="disabled" /> </Link>
+            </a>
+          </div>
+        </div>
+      ) : (
+        <div id="icon-wapper">
+          <h4 className="userAppTitle">맛을 보여주세요</h4>
+          <label htmlFor="icon-button-file" component="span">
+            <PhotoCameraRoundedIcon id="cameraIcon" fontSize="small" color="primary" />
+          </label> 
+          <input
+            accept="video/*"
+            id="icon-button-file"
+            type="file"
+            capture="environment"
+            onChange={(e) => handleCapture(e.target)}
+          />
+      </div>
+      )}
     </div>
   );
 }
 
-export default Camera;
+export default withRouter(Camera);
