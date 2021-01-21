@@ -12,7 +12,7 @@ import Article from "./components/feed/Article";
 import FlipPages from "./components/feed/FlipPages";
 import SignUpComplete from "./components/user/SignUpComplete";
 import UserSetting from './components/user/UserSetting';
-import InfoMap from './components/map/InfoMap';
+
 
 
 function App() {
@@ -30,7 +30,6 @@ function App() {
           <Route path="/feed/camera" exact render={() => <Camera />}/>
           <Route path="/feed/article" exact render={() => <Article />}/>
           <Route path="/feed/flippages" exact render={() => <FlipPages />}/>
-          <Route path='/map/infomap' exact render={() => <InfoMap />} />
           <Route path="/error" component={ErrorPage} />
           <Route path="*" component={NotFound} />
         </Switch>
